@@ -1,0 +1,384 @@
+# Food Delivery App API Documentation
+
+This is the RESTful API backend for a food delivery app that handles users, restaurants, menu items, delivery agents, and order management.
+
+---
+## ADD YOU MONGODB ATLAS URL FOR LOCAL RUN
+## npm install
+## nodemon index.js
+
+## Base URL
+```
+http://localhost:5000/
+```
+
+
+**GloabalBasepoint:** 
+```
+http://localhost:5000/
+```
+
+---
+
+## 📦 Product APIs
+
+### 1. Add Restaurant
+**Endpoint:** `POST /add-Restaurant`
+
+**Input:**
+```json
+{
+  "name": "SHIVAM HOTEL",
+  "userId": "user123",
+  "imageURL": "http://example.com/image.jpg",
+  "status": true,
+  "recipes": [
+    { "recipeName": "Paneer", "price": 100 },
+    { "recipeName": "Gravy", "price": 50 }
+  ]
+}
+```
+**Output:**
+```json
+{
+  "_id": "product123",
+  "name": "Paneer Butter Masala",
+  "userId": "user123",
+  "status": true,
+  "recipes": [...],
+  "__v": 0
+}
+```
+
+### 2. Get All Restaurants
+**Endpoint:** `GET /Restaurants`
+
+**Input:** _None_
+
+**Output:**
+```json
+[
+  {
+    "_id": "RestaurantID1",
+    "name": "SHIVAM HOTEL",
+    "status": true
+  },
+  {
+    "_id": "RestaurantID2",
+    "name": "GARG HOTEL",
+    "status": true
+  }
+]
+```
+
+### 3. Get Restaurant by ID
+**Endpoint:** `GET /Restaurant/:id`
+
+**Input:** `:id` as URL param
+
+**Output:**
+```json
+{
+  "_id": "RestaurantID1",
+  "name": "SHIVAM HOTEL",
+  ...
+}
+```
+
+---
+
+### 4. Get My Restaurants
+**Endpoint:** `GET /myRestaurants/:id`
+
+**Input:** `:id` = userId
+
+**Output:**
+```json
+[
+  {
+    "_id": "RestaurantID1",
+    "userId": "SHIVAM HOTEL"
+  }
+  .
+  .
+  .
+]
+```
+
+### 5. Delete Restaurant
+**Endpoint:** `DELETE /Restaurant/:id`
+
+**Input:** `:id` = RestaurantId
+
+**Output:**
+```json
+{
+  "acknowledged": true,
+  "deletedCount": 1
+}
+```
+
+### 6. Update Restaurant
+**Endpoint:** `PUT /update/:id`
+
+**Input:**
+```json
+{
+  "price": 200,
+  "description": "Updated"
+}
+```
+**Output:**
+```json
+{
+  "acknowledged": true,
+  "modifiedCount": 1
+}
+```
+
+---
+
+### 7. Toggle Restaurant Status
+**Endpoint:** `PUT /updatestatus/:id`
+
+**Input:** _None_
+
+**Output:**
+```json
+{
+  "message": "Status updated",
+  "result": {
+    "status": false
+  }
+}
+```
+
+### 8. Get Restaurant Menu
+**Endpoint:** `GET /restaurant/menu/:id`
+
+**Input:** `:id` = restaurant/Restaurant ID
+
+**Output:**
+```json
+[
+  { "recipeName": "Paneer", "price": 100 }
+]
+```
+
+---
+
+## 👤 User APIs
+
+### 9. Register User
+**Endpoint:** `POST /register`
+
+**Input:**
+```json
+{
+  "username": "Deepali",
+  "email": "deepali@gmail.com",
+  "password": "123456"
+}
+```
+**Output:**
+```json
+{
+  "_id": "userID1",
+  "username": "Deepali",
+  "email": "deepali@gmail.com"
+}
+```
+
+### 10. Check Signup Email
+**Endpoint:** `POST /check_signup_email`
+
+**Input:**
+```json
+{
+  "email": "deepali@gmail.com"
+}
+```
+**Output:**
+```json
+{
+  "_id": "userID1",
+  "email": "deepali@gmail.com"
+}
+```
+
+### 11. Login
+**Endpoint:** `POST /login`
+
+**Input:**
+```json
+{
+  "email": "deepali@gmail.com",
+  "password": "123456"
+}
+```
+**Output:**
+```json
+{
+  "_id": "user123",
+  "email": "deepali@gmail.com"
+}
+```
+
+---
+
+### 12. Get Profile by ID
+**Endpoint:** `GET /profile/:id`
+
+**Input:** `:id` = user ID
+
+**Output:**
+```json
+{
+  "_id": "user123",
+  "username": "Deepali"
+}
+```
+
+---
+
+## 🚚 Agent & Order APIs
+
+### 13. Create Agent
+**Endpoint:** `POST /createAgent`
+
+**Input:**
+```json
+{
+  "name": "Agent A",
+  "ownerId": "user123",
+  "available": true
+}
+```
+**Output:**
+```json
+{
+  "_id": "agent123",
+  "name": "Agent A",
+  "available": true
+}
+```
+
+### 14. Order Item
+**Endpoint:** `POST /orderItem`
+
+**Input:**
+```json
+{
+  "name": "Order 1",
+  "userId": "user123",
+  "restaurantId": "res123",
+  "status": "pending"
+}
+```
+**Output:**
+```json
+{
+  "_id": "order123",
+  "status": "pending"
+}
+```
+
+### 15. Get Pending Orders
+**Endpoint:** `GET /pendingOrder/:id`
+
+**Input:** `:id` = user ID
+
+**Output:**
+```json
+[
+  {
+    "_id": "order123",
+    "status": "pending"
+  }
+]
+```
+
+---
+
+### 16. Approve Order
+**Endpoint:** `GET /approveOrder/:id`
+
+**Input:** `:id` = order ID
+
+**Output:**
+```json
+{
+  "message": "Order approved and out for delivery",
+  "order": {
+    "_id": "order123",
+    "status": "out for delivery"
+  },
+  "agent": {
+    "_id": "agent123",
+    "available": false
+  }
+}
+```
+
+### 17. Rate Order
+**Endpoint:** `POST /rateOrder`
+
+**Input:**
+```json
+{
+  "orderId": "order123",
+  "orderRating": 5,
+  "deliveryRating": 4
+}
+```
+**Output:**
+```json
+{
+  "message": "Ratings updated successfully",
+  "order": {
+    "_id": "order123",
+    "orderRating": 5,
+    "deliveryRating": 4
+  }
+}
+```
+
+---
+
+## 📂 Schema Overview
+
+### User
+```js
+username: String,
+email: String,
+password: String
+```
+
+### Product
+```js
+name: String,
+userId: String,
+imageURL: String,
+status: Boolean,
+recipes: [{ recipeName: String, price: Number }]
+```
+
+### Order
+```js
+name: String,
+userId: String,
+restaurantId: String,
+orderRating: Number,
+deliveryRating: Number,
+status: String,
+deliverBy: String
+```
+
+### Agent
+```js
+name: String,
+ownerId: String,
+available: Boolean
+```
+
+---
